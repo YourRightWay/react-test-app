@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import nanoid from 'nanoid';
 import TableData from './TableData';
 
-
 class Table extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       edit: false,
+      theadItems: ['Candidate name', 'Candidate status', 'Candidate need offer', 'Actions']
     };
   }
 
@@ -21,14 +21,28 @@ class Table extends Component {
     this.setState({ edit: false });
   };
 
-  renderTableNames = data => (
-    data.map(item => <th key={nanoid()} scope="col">{item.name}</th>)
-  );
+  // renderTableNames = data => (
+  //   data.map(item => <th key={nanoid()} scope="col">{item.name}</th>)
+  // );
+
+  renderTableNames() {
+    return this.state.theadItems.map(data => <th key={nanoid()} scope="col">{data}</th>);
+  }
 
   render() {
     const { data } = this.props;
-    const dataNames = [];
 
+    /**
+     * Зачем это здесь нужно? Можно ведь статикой хранить thead таблицы?
+     * Зачем жестко привязываться к data[0]?
+     * В крайнем случае можно в конструкторе хранить названия колонок таблицы.
+     * И в ты эти все действия мог бы вынести в метод класа,
+     * обратится от туда к нужным пропсам и вернуть из метода уже сгенерированый thead.
+     * Тем более у тебя уже там значения статикой некоторые прописаны
+     */
+
+    // Это кусок наверно лучше убрать от сюда
+    const dataNames = [];
     Object.keys(data[0]).map(key => (dataNames.push({ name: key, id: nanoid() })));
 
     return (
@@ -36,11 +50,13 @@ class Table extends Component {
         <thead className="thead-dark">
           <tr>
             <th scope="col">#</th>
-            {this.renderTableNames(dataNames)}
+            {/*  {this.renderTableNames(dataNames)} */}
+            {this.renderTableNames()}
             <th scope="row">Actions</th>
           </tr>
         </thead>
         <tbody>
+        {/* Тоже я бы сделал отдельным методом. Не очень читаемо получается */}
           {data.map((item, ind) => (
             <TableData
               key={nanoid()}

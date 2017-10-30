@@ -6,9 +6,17 @@ import { saveAs } from 'file-saver';
  * @param fileName
  * @param data
  */
+
+// Наверно функция должна что то вернуть?
 export function exportToCSV(fileName, data) {
+  /**
+   * Я бы так написал
+   * if (!data.length) return new Error('ExportToCSV error: Invalid data')
+   * return все сотальное.
+   */
   if (data[0]) {
     const replacer = (key, value) => (value === null ? '' : value);
+
     const header = Object.keys(data[0]);
 
     let csv = data.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));

@@ -9,46 +9,54 @@ import ImportControls from '../../components/controls/ImputControls';
 import WelcomeMessage from '../../components/welcomeMessage/WelcomeMessage';
 import { exportToJSON, exportToCSV } from '../../utils/fileHelpers';
 
-
+/**
+ * Обрати внимание там где линтер ругается.
+ * Так как если игнорировать его ошибки - то и смысла большого от него нету.
+ * У меня шторм сразу подсвечивает в какой строке ошибка. Рекомендую настроить.
+ */
 class Main extends Component {
+  // handleLoadDataOnline = () => {
+  //   this.props.getDataOnline();
+  // };
 
-  handleLoadDataOnline = () => {
-    this.props.getDataOnline();
-  };
+  // handleLoadDataLocal = ({target}) => {
+  //   this.props.getDataLocal(target);
+  // };
 
-  handleLoadDataLocal = ({target}) => {
-    this.props.getDataLocal(target);
-  };
+  // handleSaveData = (data, ind) => {
+  //   this.props.editData({data, ind});
+  // };
 
-  handleSaveData = (data, ind) => {
-    this.props.editData({data, ind});
-  };
+  // handleDeleteData = (ind) => {
+  //   this.props.deleteData(ind);
+  // };
 
-  handleDeleteData = (ind) => {
-    this.props.deleteData(ind);
-  };
+  // handleExportToJSON = () => {
+  //   exportToJSON('data', this.props.items);
+  // };
+  //
+  // handleExportToCSV = () => {
+  //   exportToCSV('data', this.props.items);
+  // };
 
-  handleExportToJSON = () => {
-    exportToJSON('data', this.props.items);
-  };
-
-  handleExportToCSV = () => {
-    exportToCSV('data', this.props.items);
-  };
+  /**
+   * Можно переписать в stateless компонент
+   * @returns {XML}
+   */
 
   render() {
-    const { items } = this.props;
+    const { items, deleteData, editData, getDataOnline, getDataLocal } = this.props;
 
     return items.length ? (
       <Container>
         <Table
           data={items}
-          save={this.handleSaveData}
-          delete={this.handleDeleteData}
+          save={(data, ind) => editData({ data, ind })}
+          delete={ind => deleteData(ind)}
         />
         <ExportControls
-          toJSON={this.handleExportToJSON}
-          toCSV={this.handleExportToCSV}
+          toJSON={() => exportToJSON('data', items)}
+          toCSV={() => exportToCSV('data', items)}
         />
       </Container>
     ) : (
@@ -56,8 +64,8 @@ class Main extends Component {
         <Jumbotron>
           <WelcomeMessage />
           <ImportControls
-            toLocal={this.handleLoadDataLocal}
-            toCOnline={this.handleLoadDataOnline}
+            toLocal={target => getDataLocal(target)}
+            toCOnline={() => getDataOnline()}
           />
         </Jumbotron>
       </Container>

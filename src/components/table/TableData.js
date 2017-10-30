@@ -13,6 +13,7 @@ class TableData extends Component {
   }
 
   handleChange = ({ target }) => {
+    // Линтер ругается
     this.setState(prevState => ({ ...prevState,  [target.name]: target.value }));
   };
 
@@ -35,6 +36,7 @@ class TableData extends Component {
   );
 
   renderInputs = dataNames => (
+    // Инпут отдельный компонент
     dataNames.map(data => (
       <th key={data.id} scope="col">
         <input
@@ -52,9 +54,15 @@ class TableData extends Component {
     dataNames.map(data => <td key={nanoid()}>{item[data.name]}</td>)
   );
 
+  /**
+   * наверно не стоит миксовать td и th
+   * @param item
+   * @param ind
+   * @param dataNames
+   */
   renderRowData = (item, ind, dataNames) => (
     <tr>
-      <th scope="row">{ind + 1}</th>
+      <td scope="row">{ind + 1}</td>
       {this.renderColData(dataNames, item)}
       <td>
         {this.renderButton('Edit', () => this.props.edit(ind))}
@@ -75,6 +83,7 @@ class TableData extends Component {
   );
 
   render() {
+    // Линтер ругается
     const { ind, item, isEdit, dataNames } = this.props;
     return isEdit
       ? this.renderEditControls(item, ind, dataNames)

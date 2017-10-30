@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 
+// Линтер ругается ({ toJSON, toCSV })
 const ExportControls = ({toJSON, toCSV}) => (
   <div className="col-md-12">
     <Button
