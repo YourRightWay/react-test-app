@@ -1,24 +1,43 @@
 import * as constants from '../constants/actionTypes';
 
-const initialState = [];
+const initialState = {
+  items: [],
+};
 
-export default function(state = initialState, {type, payload}) {
 
-  switch (type) {
-    case constants.DATA_EDIT:
-      let newData = [...state];
-      newData.splice(payload.ind, 1, payload.data);
-      return newData;
+/**
+ * @param state
+ * @param action
+ * @returns {*}
+ */
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case constants.DATA_EDIT: {
+      const items = [...state.items];
 
-    case constants.DATA_DELETE:
-      let deleteData = [...state];
-      deleteData.splice(payload, 1);
-      return deleteData;
+      items.splice(action.payload.ind, 1, action.payload.data);
+      return {
+        ...state,
+        items,
+      };
+    }
+
+    case constants.DATA_DELETE: {
+      const items = [...state.items];
+
+      items.splice(action.payload, 1);
+      return {
+        ...state,
+        items,
+      };
+    }
 
     case constants.DATA_SET:
-      return payload;
-
+      return {
+        ...state,
+        items: action.payload,
+      };
     default:
       return state;
   }
-}
+};
